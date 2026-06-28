@@ -3,23 +3,24 @@ import '../../../core/helpers/shared_pref_helper.dart';
 import '../data/repo/cart_repo.dart';
 import 'cart_state.dart';
 import '../../home/data/models/products_model.dart';
-
-// ✅ ثابت للـ key عشان منكتبوش أكثر من مرة
-const String _cartCacheKey = 'cached_cart_items';
+import 'dart:async';
 
 class CartCubit extends Cubit<CartState> {
   List<ProductsModel> cartItems = [];
   final CartRepoImpl cartRepoImpl;
+  final String _cartCacheKey = 'cached_cart_items';
+  StreamSubscription? _cartSubscription;
 
   CartCubit(this.cartRepoImpl) : super(CartState.initial());
 
   void fetchCartItems() async {
     await _loadFromLocal();
 
-    syncWithFirestore();
+    _listenToFirestore();
   }
 
   Future<void> _loadFromLocal() async {
+    emit(CartState.cartLoading());
     final cached = await SharedPrefHelper.getJsonList(_cartCacheKey);
 
     if (cached != null && cached.isNotEmpty) {
@@ -30,26 +31,27 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> syncWithFirestore() async {
-    try {
-      final stream = cartRepoImpl.getCartItems();
-      final freshData = await stream.first;
+  void _listenToFirestore() {
+    _cartSubscription?.cancel();
+    _cartSubscription = cartRepoImpl.getCartItems().listen(
+      (freshData) {
+        cartItems = freshData.map((freshItem) {
+          final localItem = cartItems.firstWhere(
+            (local) => local.id == freshItem.id,
+            orElse: () => freshItem,
+          );
+          return freshItem.copyWith(quantity: localItem.quantity);
+        }).toList();
 
-      cartItems = freshData.map((freshItem) {
-        final localItem = cartItems.firstWhere(
-          (local) => local.id == freshItem.id,
-          orElse: () => freshItem,
-        );
-        return freshItem.copyWith(quantity: localItem.quantity);
-      }).toList();
-
-      await _saveToLocal();
-      emit(CartState.cartLoaded(List.from(cartItems)));
-    } catch (e) {
-      if (cartItems.isEmpty) {
-        emit(CartState.cartError(e.toString()));
-      }
-    }
+        _saveToLocal();
+        emit(CartState.cartLoaded(List.from(cartItems)));
+      },
+      onError: (e) {
+        if (cartItems.isEmpty) {
+          emit(CartState.cartError(e.toString()));
+        }
+      },
+    );
   }
 
   Future<void> _saveToLocal() async {
@@ -95,5 +97,11 @@ class CartCubit extends Cubit<CartState> {
     cartItems = [];
     await SharedPrefHelper.removeData(_cartCacheKey);
     emit(CartState.initial());
+  }
+
+  @override
+  Future<void> close() {
+    _cartSubscription?.cancel();
+    return super.close();
   }
 }

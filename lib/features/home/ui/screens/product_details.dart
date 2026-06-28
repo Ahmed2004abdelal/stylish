@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../core/helpers/extension.dart';
 import '../../../../core/helpers/spacer.dart';
-import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/style.dart';
 import '../../logic/home/home_cubit.dart';
-import '../../logic/home/home_state.dart';
 import '../widgets/product_details/add_to_cart_with_cubit.dart';
 import '../widgets/product_details/product_price_info.dart';
 import '../widgets/product_details/product_slider.dart';
 import '../widgets/home_screen/show_deal_of_the_day_products.dart';
 import '../widgets/product_details/size_selection.dart';
-import '../../../../core/routing/routes.dart';
 import '../../data/models/products_model.dart';
 import '../widgets/product_details/bottom_buttons.dart';
 

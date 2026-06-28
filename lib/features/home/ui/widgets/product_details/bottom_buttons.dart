@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../core/helpers/extension.dart';
-import '../../../../../core/helpers/spacer.dart';
-import '../../../../../core/theme/colors.dart';
-import '../../../../../core/theme/style.dart';
 import '../../../logic/home/home_cubit.dart';
-import '../../../logic/home/home_state.dart';
 import 'custom_details_button.dart';
-import 'product_slider.dart';
-import '../home_screen/show_deal_of_the_day_products.dart';
 
 import '../../../data/models/products_model.dart';
-import '../../screens/product_details.dart';
 
 
 class BottomButtons extends StatelessWidget {

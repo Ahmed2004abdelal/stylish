@@ -26,6 +26,5 @@ Future<void> initialSetup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await SharedPrefHelper.init();
-  // await Stripe.instance.applySettings();
   Stripe.publishableKey = Constants.paymentPublishableKey;
 }

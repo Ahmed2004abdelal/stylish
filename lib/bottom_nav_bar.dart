@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: const HomeScreen(),
       ),
       BlocProvider(
-        create: (context) => getIt<CartCubit>()..syncWithFirestore(),
+        create: (context) => getIt<CartCubit>()..fetchCartItems(),
         child: const CartScreen(),
       ),
       BlocProvider(

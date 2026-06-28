@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'show_products.dart';
 import '../../../../../core/helpers/extension.dart';
 import '../../../../../core/routing/routes.dart';
 import '../../../data/models/products_model.dart';
 import '../../../logic/home/home_cubit.dart';
 
-import '../../../../../core/helpers/spacer.dart';
-import '../../../../../core/theme/colors.dart';
-import '../../../../../core/theme/style.dart';
 import '../../../logic/home/home_state.dart';
 
 class ShowTrendingProducts extends StatelessWidget {

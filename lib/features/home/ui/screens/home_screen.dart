@@ -8,7 +8,6 @@ import '../../../../core/routing/routes.dart';
 import '../../data/models/products_model.dart';
 import '../../logic/home/home_cubit.dart';
 import '../../logic/home/home_state.dart';
-import '../widgets/home_screen/categories_with_cubit.dart';
 import '../widgets/home_screen/offers.dart';
 import '../widgets/home_screen/show_deal_of_the_day_products.dart';
 import '../widgets/home_screen/show_trending_products.dart';
